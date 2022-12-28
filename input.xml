@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <Expressions>
+        <expression1>12 + 354 * (333/12 + 3)</expression1>
+        <expression2>((3 + 3 + 3 + 3 + 3 + 3) / 3) * 3</expression2>
+        <expression3>1 / 0</expression3>
+        <expression4>3 + (5 + 6) / 4 - 7</expression4>
+        <expression5>(1 + 1) / (1 + 1)</expression5>
+    </Expressions>
