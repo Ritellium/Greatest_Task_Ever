@@ -4,20 +4,19 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class XmlReader {
+public class XmlReader extends AbstractReader {
 
-    private XMLStreamReader reader;
+    private final XMLStreamReader reader;
 
     public XmlReader(String fileName) throws IOException, XMLStreamException {
+        super(fileName);
         XMLInputFactory factory = XMLInputFactory.newInstance();
-        reader = factory.createXMLStreamReader(new FileInputStream(fileName));
+        reader = factory.createXMLStreamReader(super.getFile());
     }
-
+    @Override
     public ArrayList<String> read() throws XMLStreamException {
         ArrayList<String> result = new ArrayList<>();
 

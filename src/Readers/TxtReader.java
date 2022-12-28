@@ -2,25 +2,25 @@ package Readers;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-public class TxtReader {
+public class TxtReader extends AbstractReader {
 
-    private BufferedReader reader;
+    private final BufferedReader reader;
 
     public TxtReader(String fileName) throws FileNotFoundException
     {
-        reader = new BufferedReader(new FileReader(fileName));
+        super(fileName);
+        reader = new BufferedReader(super.getFile());
     }
-
+    @Override
     public ArrayList<String> read() throws IOException {
         ArrayList<String> result = new ArrayList<>();
 
         Stream<String> fileStrings = reader.lines();
-        fileStrings.forEach(str->result.add(str));
+        fileStrings.forEach(result::add);
 
         reader.close();
 

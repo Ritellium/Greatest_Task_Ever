@@ -1,3 +1,4 @@
+import Readers.AbstractReader;
 import Readers.JsonReader;
 import Readers.TxtReader;
 import Readers.XmlReader;
@@ -17,27 +18,20 @@ import java.util.ArrayList;
 */
 
 class FiletypeException extends Throwable {
-    private String message;
     public FiletypeException(String mess)
     {
         super(mess);
-    }
-
-    @Override
-    public String getMessage()
-    {
-        return message;
     }
 }
 
 public class Main {
 
-    public static String TXT = new String(".txt");
-    public static String XML = new String(".xml");
-    public static String JSON = new String(".json");
+    public static String TXT = ".txt";
+    public static String XML = ".xml";
+    public static String JSON = ".json";
 
     public static ArrayList<String> getStringArrayFromFile(String filename) throws IOException, XMLStreamException, FiletypeException, ParseException {
-        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> result;
 
         if(filename.length() < 5)
         {
@@ -46,16 +40,18 @@ public class Main {
 
         String filetype = filename.substring(filename.length() - 5);
         String filetypeShort = filetype.substring(1);
+
+        AbstractReader reader;
         if (filetypeShort.compareTo(TXT) == 0) {
-            TxtReader reader = new TxtReader(filename);
+            reader = new TxtReader(filename);
             result = reader.read();
         }
         else if (filetypeShort.compareTo(XML) == 0) {
-            XmlReader reader = new XmlReader(filename);
+            reader = new XmlReader(filename);
             result = reader.read();
         }
         else if (filetype.compareTo(JSON) == 0) {
-            JsonReader reader = new JsonReader(filename);
+            reader = new JsonReader(filename);
             result = reader.read();
         }
         else
@@ -64,7 +60,7 @@ public class Main {
         }
 
         return result;
-    }
+    } // Should be in zip reader
 
     public static InputStreamReader isr=new InputStreamReader(System.in);
     public static BufferedReader consoleInput=new BufferedReader(isr);

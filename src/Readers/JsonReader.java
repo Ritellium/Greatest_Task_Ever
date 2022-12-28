@@ -5,18 +5,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class JsonReader {
+public class JsonReader extends AbstractReader{
 
-    private JSONArray reader;
+    private final JSONArray reader;
 
     public JsonReader(String fileName) throws IOException, ParseException {
-        reader = (JSONArray) new JSONParser().parse(new FileReader(fileName));
+        super(fileName);
+        reader = (JSONArray) new JSONParser().parse(super.getFile());
     }
 
+    @Override
     public ArrayList<String> read() {
 
         ArrayList<String> result = new ArrayList<>();
