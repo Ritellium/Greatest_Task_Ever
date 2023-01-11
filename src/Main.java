@@ -1,12 +1,5 @@
 import Parsers.ArithmeticParse;
-import Readers.AbstractReader;
-import Readers.JsonReader;
-import Readers.TxtReader;
-import Readers.XmlReader;
 import Writers.AbstractWriter;
-import Writers.JsonWriter;
-import Writers.TxtWriter;
-import Writers.XmlWriter;
 import org.json.simple.parser.ParseException;
 
 import javax.xml.stream.XMLStreamException;
@@ -14,8 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /*
 Необходимо реализовать консольное приложение, которое:
@@ -24,68 +15,7 @@ import java.util.regex.Pattern;
 3)  Записывает данные в выходной файл;
 */
 
-class FiletypeException extends Throwable {
-    public FiletypeException(String mess)
-    {
-        super(mess);
-    }
-}
-
 public class Main {
-
-    public static String TXT = ".txt";
-    public static String XML = ".xml";
-    public static String JSON = ".json";
-
-    public static ArrayList<String> getStringArrayFromFile(String filename) throws IOException, XMLStreamException, FiletypeException, ParseException {
-        ArrayList<String> result;
-
-        Pattern fileTypePattern = Pattern.compile("[.]\\w+$");
-        Matcher fileTypeFinder = fileTypePattern.matcher(filename);
-        if (fileTypeFinder.find()) {
-            String filetype = filename.substring(fileTypeFinder.start(), fileTypeFinder.end());
-
-            AbstractReader reader;
-            if (filetype.compareTo(TXT) == 0) {
-                reader = new TxtReader(filename);
-                result = reader.read();
-            } else if (filetype.compareTo(XML) == 0) {
-                reader = new XmlReader(filename);
-                result = reader.read();
-            } else if (filetype.compareTo(JSON) == 0) {
-                reader = new JsonReader(filename);
-                result = reader.read();
-            } else {
-                throw new FiletypeException("Wrong filetype");
-            }
-
-            return result;
-        } else {
-            throw new FiletypeException("Wrong filename");
-        }
-    } // Should be in zip reader
-    public static AbstractWriter createWriter(String filename) throws IOException, XMLStreamException, FiletypeException, ParseException {
-        Pattern fileTypePattern = Pattern.compile("[.]\\w+$");
-        Matcher fileTypeFinder = fileTypePattern.matcher(filename);
-        if (fileTypeFinder.find()) {
-            String filetype = filename.substring(fileTypeFinder.start(), fileTypeFinder.end());
-
-            AbstractWriter writer;
-            if (filetype.compareTo(TXT) == 0) {
-                writer = new TxtWriter(filename);
-            } else if (filetype.compareTo(XML) == 0) {
-                writer = new XmlWriter(filename);
-            } else if (filetype.compareTo(JSON) == 0) {
-                writer = new JsonWriter(filename);
-            } else {
-                throw new FiletypeException("Wrong filetype");
-            }
-
-            return writer;
-        } else {
-            throw new FiletypeException("Wrong filename");
-        }
-    }
     public static InputStreamReader isr = new InputStreamReader(System.in);
     public static BufferedReader consoleInput = new BufferedReader(isr);
 
@@ -96,9 +26,9 @@ public class Main {
 
             System.out.println("Type the name of file to write result into:");
             String filenameWrite = consoleInput.readLine();
-            AbstractWriter writer = createWriter(filenameWrite);
+            AbstractWriter writer = Additional.createWriter(filenameWrite);
 
-            ArrayList<String> fileContent = getStringArrayFromFile(filename);
+            ArrayList<String> fileContent = Additional.getStringArrayFromFile(filename);
 
             System.out.println("File content archived, how do you want to parse it:");
             System.out.println("> '1' to use selfmade regular expression based parser");
