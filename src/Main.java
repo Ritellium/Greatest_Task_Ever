@@ -1,7 +1,12 @@
+import Parsers.ArithmeticParse;
 import Readers.AbstractReader;
 import Readers.JsonReader;
 import Readers.TxtReader;
 import Readers.XmlReader;
+import Writers.AbstractWriter;
+import Writers.JsonWriter;
+import Writers.TxtWriter;
+import Writers.XmlWriter;
 import org.json.simple.parser.ParseException;
 
 import javax.xml.stream.XMLStreamException;
@@ -9,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
 Необходимо реализовать консольное приложение, которое:
@@ -33,55 +40,79 @@ public class Main {
     public static ArrayList<String> getStringArrayFromFile(String filename) throws IOException, XMLStreamException, FiletypeException, ParseException {
         ArrayList<String> result;
 
-        if(filename.length() < 5)
-        {
-            throw new FiletypeException("Filename can not be that small");
-        }
+        Pattern fileTypePattern = Pattern.compile("[.]\\w+$");
+        Matcher fileTypeFinder = fileTypePattern.matcher(filename);
+        if (fileTypeFinder.find()) {
+            String filetype = filename.substring(fileTypeFinder.start(), fileTypeFinder.end());
 
-        String filetype = filename.substring(filename.length() - 5);
-        String filetypeShort = filetype.substring(1);
+            AbstractReader reader;
+            if (filetype.compareTo(TXT) == 0) {
+                reader = new TxtReader(filename);
+                result = reader.read();
+            } else if (filetype.compareTo(XML) == 0) {
+                reader = new XmlReader(filename);
+                result = reader.read();
+            } else if (filetype.compareTo(JSON) == 0) {
+                reader = new JsonReader(filename);
+                result = reader.read();
+            } else {
+                throw new FiletypeException("Wrong filetype");
+            }
 
-        AbstractReader reader;
-        if (filetypeShort.compareTo(TXT) == 0) {
-            reader = new TxtReader(filename);
-            result = reader.read();
+            return result;
+        } else {
+            throw new FiletypeException("Wrong filename");
         }
-        else if (filetypeShort.compareTo(XML) == 0) {
-            reader = new XmlReader(filename);
-            result = reader.read();
-        }
-        else if (filetype.compareTo(JSON) == 0) {
-            reader = new JsonReader(filename);
-            result = reader.read();
-        }
-        else
-        {
-            throw new FiletypeException("Wrong filetype");
-        }
-
-        return result;
     } // Should be in zip reader
+    public static AbstractWriter createWriter(String filename) throws IOException, XMLStreamException, FiletypeException, ParseException {
+        Pattern fileTypePattern = Pattern.compile("[.]\\w+$");
+        Matcher fileTypeFinder = fileTypePattern.matcher(filename);
+        if (fileTypeFinder.find()) {
+            String filetype = filename.substring(fileTypeFinder.start(), fileTypeFinder.end());
 
-    public static InputStreamReader isr=new InputStreamReader(System.in);
-    public static BufferedReader consoleInput=new BufferedReader(isr);
+            AbstractWriter writer;
+            if (filetype.compareTo(TXT) == 0) {
+                writer = new TxtWriter(filename);
+            } else if (filetype.compareTo(XML) == 0) {
+                writer = new XmlWriter(filename);
+            } else if (filetype.compareTo(JSON) == 0) {
+                writer = new JsonWriter(filename);
+            } else {
+                throw new FiletypeException("Wrong filetype");
+            }
 
-    public static void main(String[] args)  throws IOException
-    {
-        try{
+            return writer;
+        } else {
+            throw new FiletypeException("Wrong filename");
+        }
+    }
+    public static InputStreamReader isr = new InputStreamReader(System.in);
+    public static BufferedReader consoleInput = new BufferedReader(isr);
+
+    public static void main(String[] args) throws IOException {
+        try {
             System.out.println("Type the name of file to read:");
-
             String filename = consoleInput.readLine();
-            ArrayList<String> fileContent = new ArrayList<>(getStringArrayFromFile(filename));
 
-            for (String it: fileContent)
-            {
-                System.out.println("Content: " + it);
-            } ///
-        }
-        catch (IOException | XMLStreamException | FiletypeException | ParseException e) {
+            System.out.println("Type the name of file to write result into:");
+            String filenameWrite = consoleInput.readLine();
+            AbstractWriter writer = createWriter(filenameWrite);
+
+            ArrayList<String> fileContent = getStringArrayFromFile(filename);
+
+            System.out.println("File content archived, how do you want to parse it:");
+            System.out.println("> '1' to use selfmade regular expression based parser");
+            System.out.println("> '2' to use selfmade determinate automaton based parser");
+            System.out.println("> \"other number\" to use exp4j library tools (the only working now)");
+
+            int mode = Integer.parseInt(consoleInput.readLine());
+            ArrayList<String> contentParsed = ArithmeticParse.parseStringArray(fileContent, mode);
+
+            writer.write(contentParsed);
+
+        } catch (IOException | XMLStreamException | FiletypeException | ParseException e) {
             System.out.println(e.getClass() + ": " + e.getMessage());
-        }
-        finally {
+        } finally {
             consoleInput.close();
         }
     }

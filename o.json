@@ -1,0 +1,7 @@
+[
+	{"result_0":"10897.5"},
+	{"result_1":"Unknown function or variable 'aad' at pos 3 in expression '12 aad + 354'"},
+	{"result_2":"Mismatched parentheses detected. Please check the expression"},
+	{"result_3":"Division by zero!"},
+	{"result_4":"-1.25"}
+]
