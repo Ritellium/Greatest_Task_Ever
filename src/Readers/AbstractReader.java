@@ -1,5 +1,7 @@
 package Readers;
 
+import org.json.simple.parser.ParseException;
+
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -16,5 +18,5 @@ public abstract class AbstractReader {
         return fileModel;
     }
 
-    abstract public ArrayList<String> read() throws IOException, XMLStreamException;
+    abstract public ArrayList<String> read() throws IOException, XMLStreamException, ParseException, FileTypeException;
 }

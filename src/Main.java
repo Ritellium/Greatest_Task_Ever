@@ -1,4 +1,6 @@
 import Parsers.ArithmeticParse;
+import Readers.ArchiveReader;
+import Readers.FileTypeException;
 import Writers.AbstractWriter;
 import org.json.simple.parser.ParseException;
 
@@ -28,7 +30,7 @@ public class Main {
             String filenameWrite = consoleInput.readLine();
             AbstractWriter writer = Additional.createWriter(filenameWrite);
 
-            ArrayList<String> fileContent = Additional.getStringArrayFromFile(filename);
+            ArrayList<String> fileContent = ArchiveReader.getStringArrayFromFile(filename); //
 
             System.out.println("File content archived, how do you want to parse it:");
             System.out.println("> '1' to use selfmade regular expression based parser");
@@ -40,7 +42,7 @@ public class Main {
 
             writer.write(contentParsed);
 
-        } catch (IOException | XMLStreamException | FiletypeException | ParseException e) {
+        } catch (IOException | XMLStreamException | FileTypeException | ParseException e) {
             System.out.println(e.getClass() + ": " + e.getMessage());
         } finally {
             consoleInput.close();
