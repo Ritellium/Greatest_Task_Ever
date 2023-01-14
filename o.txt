@@ -1,5 +1,5 @@
 10897.5
 18.0
 Division by zero!
--1.25
-1.0
+No left/right operand for some operation
+Two or more arithmetic operations at once

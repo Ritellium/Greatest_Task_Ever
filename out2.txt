@@ -1,5 +1,0 @@
-10897.5
-Unknown function or variable 'aad' at pos 3 in expression '12 aad + 354'
-Mismatched parentheses detected. Please check the expression
-Division by zero!
--1.25

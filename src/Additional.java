@@ -1,3 +1,7 @@
+import Parsers.ExpressionParser;
+import Parsers.FunctionParser;
+import Parsers.RegularsParser;
+import Parsers.ThirdPartyParser;
 import Readers.FileTypeException;
 import Writers.AbstractWriter;
 import Writers.JsonWriter;
@@ -7,12 +11,11 @@ import org.json.simple.parser.ParseException;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static Readers.FileTypeException.*;
-
-
 public class Additional {
 
     public static AbstractWriter createWriter(String filename) throws IOException, XMLStreamException, FileTypeException, ParseException {
@@ -36,5 +39,22 @@ public class Additional {
         } else {
             throw new FileTypeException("Wrong filename");
         }
+    }
+    public static ArrayList<String> parseStringArray(ArrayList<String> strings, final int mode) {
+        ArrayList<String> parsed = new ArrayList<>();
+
+        ExpressionParser exParser;
+        for (String it : strings) {
+            if (mode == 1) {
+                exParser = new RegularsParser(it);
+            } else if (mode == 2) {
+                exParser = new FunctionParser(it);
+            } else {
+                exParser = new ThirdPartyParser(it);
+            }
+            parsed.add(exParser.parseExpression());
+        }
+
+        return parsed;
     }
 }

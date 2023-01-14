@@ -1,4 +1,3 @@
-import Parsers.ArithmeticParse;
 import Readers.ArchiveReader;
 import Readers.FileTypeException;
 import Writers.AbstractWriter;
@@ -34,11 +33,13 @@ public class Main {
 
             System.out.println("File content archived, how do you want to parse it:");
             System.out.println("> '1' to use selfmade regular expression based parser");
-            System.out.println("> '2' to use selfmade determinate automaton based parser");
-            System.out.println("> \"other number\" to use exp4j library tools (the only working now)");
+            System.out.println("* Expression should not contain brackets");
+            System.out.println("> '2' to use selfmade functions based parser");
+            System.out.println("* Any brackets level supported");
+            System.out.println("> \"other number\" to use exp4j library tools (works)");
 
             int mode = Integer.parseInt(consoleInput.readLine());
-            ArrayList<String> contentParsed = ArithmeticParse.parseStringArray(fileContent, mode);
+            ArrayList<String> contentParsed = Additional.parseStringArray(fileContent, mode);
 
             writer.write(contentParsed);
 

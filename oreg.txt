@@ -1,0 +1,5 @@
+117897.0
+No left/right operand for some operation
+Unsupported symbol detected (not a digit or operation sign)
+Division by zero!
+Unsupported symbol detected (not a digit or operation sign)
