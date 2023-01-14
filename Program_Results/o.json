@@ -1,0 +1,7 @@
+[
+	{"result_0":"10897.5"},
+	{"result_1":"Unsupported symbol at pos 2"},
+	{"result_2":"No closing bracket for opening one at pos 3"},
+	{"result_3":"Division by zero!"},
+	{"result_4":"-1.25"}
+]

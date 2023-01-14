@@ -23,10 +23,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try {
             System.out.println("Type the name of file to read:");
-            String filename = consoleInput.readLine();
+            String filename = "Program_Inputs/" + consoleInput.readLine();
 
             System.out.println("Type the name of file to write result into:");
-            String filenameWrite = consoleInput.readLine();
+            String filenameWrite =  "Program_Results/" + consoleInput.readLine();
             AbstractWriter writer = Additional.createWriter(filenameWrite);
 
             ArrayList<String> fileContent = ArchiveReader.getStringArrayFromFile(filename); //
