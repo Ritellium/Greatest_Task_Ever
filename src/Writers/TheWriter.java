@@ -69,7 +69,7 @@ public final class TheWriter {
             addZip(askPassword());
         }
     }
-    private void addZip(String password) throws ZipException {
+    private void addZip(String password) throws IOException {
         File file = new File(filename);
 
         ZipParameters parameters = new ZipParameters();
@@ -92,6 +92,7 @@ public final class TheWriter {
             zipFile.setPassword(password.toCharArray());
         }
         zipFile.addFile(file, parameters);
+        zipFile.close();
     }
     private void encrypt(String key) throws Exception {
         if (!key.equals("")) {

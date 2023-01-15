@@ -28,7 +28,7 @@ public class Main {
         System.out.println("* Expression should not contain brackets");
         System.out.println("> '2' to use selfmade functions based parser");
         System.out.println("* Any brackets level supported");
-        System.out.println("> \"other number\" to use exp4j library tools (works)");
+        System.out.println("> \"other number\" to use exp4j library tools");
         return Integer.parseInt(AbstractReader.getConsole().readLine());
     }
     public static void main(String[] args) throws IOException {
