@@ -1,14 +1,13 @@
 package Readers;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public abstract class AbstractReader {
     private static final BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
     private final String filename;
-    AbstractReader(String _filename) throws FileNotFoundException {
+    AbstractReader(String _filename) {
         filename = _filename;
     }
     public String getFilename() {

@@ -1,7 +1,6 @@
 package Readers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -14,7 +13,7 @@ import static Readers.FileTypeException.ZIP;
 public class TheReader {
     private static final String helpFolder = "Program_Inputs/ZipWorks/";
     private String filename;
-    public TheReader(String _filename) throws FileNotFoundException {
+    public TheReader(String _filename) throws IOException {
         filename = _filename;
         clearZipWorks(helpFolder);
     }
@@ -57,7 +56,7 @@ public class TheReader {
         return result;
     }
 
-    private static void clearZipWorks(String zipWorksFolder) {
+    private static void clearZipWorks(String zipWorksFolder) throws IOException {
         System.gc();
         File fDelete = new File(zipWorksFolder);
         if (fDelete.exists()) {
@@ -65,12 +64,16 @@ public class TheReader {
             assert deletions != null;
             for (var it : deletions) {
                 if (it.isFile()) {
-                    it.delete();
+                    if (!it.delete()){
+                        throw new IOException("Cannot clear ZipWorks/ folder(s)");
+                    }
                 } else {
                     clearZipWorks(zipWorksFolder + it.getName());
                 }
             }
-            fDelete.delete();
+            if (!fDelete.delete()) {
+                throw new IOException("Cannot clear ZipWorks/ folder(s)");
+            }
         }
     }
 
@@ -79,10 +82,6 @@ public class TheReader {
         System.out.println("> '1' to yes. Other to no");
         System.out.println("* Decrypting not encrypted file will cause harm!");
         int mode = Integer.parseInt(AbstractReader.getConsole().readLine());
-        if (mode == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return mode == 1;
     }
 }

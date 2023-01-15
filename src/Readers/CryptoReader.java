@@ -14,7 +14,7 @@ import static Readers.FileTypeException.*;
 
 // Reads unzipped files. Decorator for txt, xml, json
 public class CryptoReader extends AbstractReader {
-    CryptoReader(String _filename) throws FileNotFoundException {
+    CryptoReader(String _filename) {
         super(_filename);
     }
     private static String askForKey() throws IOException {

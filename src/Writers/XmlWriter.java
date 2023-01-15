@@ -14,7 +14,7 @@ public class XmlWriter extends AbstractWriter{
     private final XMLEvent end;
     private final XMLEvent tab;
     private final XMLEventWriter writer;
-    private XMLEventFactory eventFactory;
+    private final XMLEventFactory eventFactory;
 
     public XmlWriter(String filename) throws IOException, XMLStreamException {
         super(filename);
@@ -27,7 +27,7 @@ public class XmlWriter extends AbstractWriter{
     }
 
     @Override
-    public void write(ArrayList<String> strings) throws IOException, XMLStreamException {
+    public void write(ArrayList<String> strings) throws XMLStreamException {
         StartDocument startDocument = eventFactory.createStartDocument();
         writer.add(startDocument);
 
@@ -38,15 +38,15 @@ public class XmlWriter extends AbstractWriter{
 
         for(int i = 0; i < strings.size(); i++)
         {
-            Integer number = i+1;
-            StartElement sElement = eventFactory.createStartElement("", "", "result_" + number.toString());
+            int number = i+1;
+            StartElement sElement = eventFactory.createStartElement("", "", "result_" + number);
             writer.add(tab);
             writer.add(sElement);
 
             Characters characters = eventFactory.createCharacters(strings.get(i));
             writer.add(characters);
 
-            EndElement eElement = eventFactory.createEndElement("", "", "result_" + number.toString());
+            EndElement eElement = eventFactory.createEndElement("", "", "result_" + number);
             writer.add(eElement);
             writer.add(end);
         }

@@ -9,11 +9,11 @@ import java.util.List;
 public class ArchiveReader extends DirectoryReader {
     private final ZipFile zipFile;
     private String folderIn = "";
-    ArchiveReader(String filename) throws IOException {
+    ArchiveReader(String filename) {
         super(filename);
         zipFile = new ZipFile(super.getFilename());
     }
-    ArchiveReader(String filename, String folderName) throws IOException {
+    ArchiveReader(String filename, String folderName) {
         super(filename);
         folderIn = folderName;
         zipFile = new ZipFile(super.getFilename());

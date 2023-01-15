@@ -25,8 +25,8 @@ import java.util.regex.Pattern;
 import static Readers.FileTypeException.*;
 
 // Decorator for other Writers. Can encode and archive (with password too)
-public class TheWriter {
-    private String filename;
+public final class TheWriter {
+    private final String filename;
     public TheWriter(String _filename) {
         filename = _filename;
     }
@@ -39,11 +39,7 @@ public class TheWriter {
         System.out.println("Do you want to zip file into archive?");
         System.out.println("> '1' to yes. Other to no");
         int mode = Integer.parseInt(AbstractReader.getConsole().readLine());
-        if (mode == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return mode == 1;
     }
     private String askPassword() throws IOException {
         System.out.println("Input zip password. Press enter to skip");
@@ -86,7 +82,9 @@ public class TheWriter {
 
         Pattern fileTypePattern = Pattern.compile("[.]\\w+$");
         Matcher fileTypeFinder = fileTypePattern.matcher(filename);
-        fileTypeFinder.find();
+        if (!fileTypeFinder.find()) {
+            throw new ZipException("Wrong filename of file to be packed");
+        }
         String filenameZip = filename.substring(fileTypeFinder.start()) + ZIP;
 
         ZipFile zipFile = new ZipFile(filenameZip);
