@@ -2,13 +2,13 @@ package Readers;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
-public abstract class AbstractReader {
+public abstract class DirectoryReader {
     private static final BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
     private final String filename;
-    AbstractReader(String _filename) throws FileNotFoundException {
+    DirectoryReader(String _filename) throws FileNotFoundException {
         filename = _filename;
     }
     public String getFilename() {
@@ -17,5 +17,5 @@ public abstract class AbstractReader {
     public static BufferedReader getConsole() {
         return consoleInput;
     }
-    abstract public ArrayList<String> read() throws Exception;
+    public abstract String nextFile() throws IOException;
 }

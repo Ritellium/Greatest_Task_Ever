@@ -1,12 +1,8 @@
-import Readers.ArchiveReader;
-import Readers.FileTypeException;
+import Readers.AbstractReader;
+import Readers.TheReader;
 import Writers.AbstractWriter;
-import org.json.simple.parser.ParseException;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /*
@@ -17,36 +13,42 @@ import java.util.ArrayList;
 */
 
 public class Main {
-    public static InputStreamReader isr = new InputStreamReader(System.in);
-    public static BufferedReader consoleInput = new BufferedReader(isr);
-
+    private static String askInputFile() throws IOException {
+        System.out.println("Type the name of file to read:");
+        return "Program_Inputs/" + AbstractReader.getConsole().readLine();
+    }
+    private static String askOutputFile() throws IOException {
+        System.out.println("Type the name of file to write result into:");
+        return "Program_Results/" + AbstractReader.getConsole().readLine();
+    }
+    private static int askParsingMode() throws IOException {
+        System.out.println("File content archived, how do you want to parse it:");
+        System.out.println("> '1' to use selfmade regular expression based parser");
+        System.out.println("* Expression should not contain brackets");
+        System.out.println("> '2' to use selfmade functions based parser");
+        System.out.println("* Any brackets level supported");
+        System.out.println("> \"other number\" to use exp4j library tools (works)");
+        return Integer.parseInt(AbstractReader.getConsole().readLine());
+    }
     public static void main(String[] args) throws IOException {
         try {
-            System.out.println("Type the name of file to read:");
-            String filename = "Program_Inputs/" + consoleInput.readLine();
+            String filenameRead =  askInputFile();
+            TheReader reader = new TheReader(filenameRead);
+            ArrayList<String> fileContent = reader.read();
 
-            System.out.println("Type the name of file to write result into:");
-            String filenameWrite =  "Program_Results/" + consoleInput.readLine();
+            String filenameWrite = askOutputFile();
             AbstractWriter writer = Additional.createWriter(filenameWrite);
 
-            ArrayList<String> fileContent = ArchiveReader.getStringArrayFromFile(filename); //
-
-            System.out.println("File content archived, how do you want to parse it:");
-            System.out.println("> '1' to use selfmade regular expression based parser");
-            System.out.println("* Expression should not contain brackets");
-            System.out.println("> '2' to use selfmade functions based parser");
-            System.out.println("* Any brackets level supported");
-            System.out.println("> \"other number\" to use exp4j library tools (works)");
-
-            int mode = Integer.parseInt(consoleInput.readLine());
+            int mode = askParsingMode();
             ArrayList<String> contentParsed = Additional.parseStringArray(fileContent, mode);
 
             writer.write(contentParsed);
+            System.out.println("Results in " + filenameWrite);
 
-        } catch (IOException | XMLStreamException | FileTypeException | ParseException e) {
+        } catch (Exception e) {
             System.out.println(e.getClass() + ": " + e.getMessage());
         } finally {
-            consoleInput.close();
+            AbstractReader.getConsole().close();
         }
     }
 }
