@@ -1,6 +1,7 @@
+import Parsers.TheParser;
 import Readers.AbstractReader;
 import Readers.TheReader;
-import Writers.AbstractWriter;
+import Writers.TheWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,10 +38,10 @@ public class Main {
             ArrayList<String> fileContent = reader.read();
 
             String filenameWrite = askOutputFile();
-            AbstractWriter writer = Additional.createWriter(filenameWrite);
+            TheWriter writer = new TheWriter(filenameWrite);
 
             int mode = askParsingMode();
-            ArrayList<String> contentParsed = Additional.parseStringArray(fileContent, mode);
+            ArrayList<String> contentParsed = TheParser.parseStringArray(fileContent, mode);
 
             writer.write(contentParsed);
             System.out.println("Results in " + filenameWrite);

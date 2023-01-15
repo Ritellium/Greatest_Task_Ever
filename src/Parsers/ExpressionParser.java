@@ -13,7 +13,6 @@ public abstract class ExpressionParser {
         toParse = expression;
     }
     public abstract String parseExpression();
-
     protected static double calculate(ArrayList<String> numbersAndOperations) {
         double result;
         try {

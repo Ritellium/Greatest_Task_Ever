@@ -28,18 +28,20 @@ public class CryptoReader extends AbstractReader {
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         byte[] inputBytes = encoded.readAllBytes();
+        encoded.close();
 
         byte[] outputBytes = cipher.doFinal(Base64.getDecoder().decode(inputBytes));
         FileOutputStream decoded = new FileOutputStream(super.getFilename());
         decoded.write(outputBytes);
+        decoded.close();
     }
     public ArrayList<String> read() throws Exception {
         ArrayList<String> result;
         Pattern fileTypePattern = Pattern.compile("[.]\\w+$");
         Matcher fileTypeFinder = fileTypePattern.matcher(super.getFilename());
+        AbstractReader reader;
         if (fileTypeFinder.find()) {
             String filetype = super.getFilename().substring(fileTypeFinder.start(), fileTypeFinder.end());
-            AbstractReader reader;
             if (filetype.compareTo(TXT) == 0) {
                 reader = new TxtReader(super.getFilename());
                 result = reader.read();
