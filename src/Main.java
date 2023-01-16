@@ -24,7 +24,7 @@ public class Main {
     private static int askParsingMode() throws IOException {
         System.out.println("File content archived, how do you want to parse it:");
         System.out.println("> '1' to use selfmade regular expression based parser");
-        System.out.println("* Expression should not contain brackets");
+        System.out.println("* Any brackets level supported. Use '~' for negative numbers");
         System.out.println("> '2' to use selfmade functions based parser");
         System.out.println("* Any brackets level supported");
         System.out.println("> \"other number\" to use exp4j library tools");
