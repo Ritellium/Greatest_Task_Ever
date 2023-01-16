@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,7 +84,7 @@ public final class TheWriter {
         if (!fileTypeFinder.find()) {
             throw new ZipException("Wrong filename of file to be packed");
         }
-        String filenameZip = filename.substring(fileTypeFinder.start()) + ZIP;
+        String filenameZip = filename.substring(0, fileTypeFinder.start()) + ZIP;
 
         ZipFile zipFile = new ZipFile(filenameZip);
         if (!password.equals("")) {
@@ -97,7 +96,6 @@ public final class TheWriter {
     private void encrypt(String key) throws Exception {
         if (!key.equals("")) {
             FileInputStream input = new FileInputStream(filename);
-            FileOutputStream encoded = new FileOutputStream(filename);
             Key secretKey = new SecretKeySpec(Arrays.copyOf(key.getBytes(), 16), "AES");
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -105,7 +103,8 @@ public final class TheWriter {
             byte[] inputBytes = input.readAllBytes();
             byte[] outputBytes = cipher.doFinal(inputBytes);
             input.close();
-            encoded.write(Base64.getEncoder().encode(outputBytes));
+            FileOutputStream encoded = new FileOutputStream(filename);
+            encoded.write(outputBytes);
             encoded.close();
         }
     }

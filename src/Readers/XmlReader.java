@@ -20,7 +20,7 @@ public class XmlReader extends AbstractReader {
         ArrayList<String> result = new ArrayList<>();
         while (reader.hasNext()) {
             if (reader.next() == XMLStreamConstants.CHARACTERS) {
-                String current = reader.getText().replaceAll(" ", "").replaceAll("\n", "");
+                String current = reader.getText().replaceAll("\\s", "").replaceAll("\n", "");
                 if (!current.equals("")) {
                     result.add(current);
                 }

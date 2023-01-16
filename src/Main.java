@@ -5,7 +5,6 @@ import Writers.TheWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 /*
 Необходимо реализовать консольное приложение, которое:
 1)  Читает данные из входного файла; txt, xml, json. Encoded or/and Archived

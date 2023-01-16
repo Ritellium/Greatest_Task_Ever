@@ -22,10 +22,11 @@ public class TheReader {
         DirectoryReader directoryReader;
         Pattern objectTypePattern = Pattern.compile("([.]\\w+$)|(/$)");
         Matcher objectTypeFinder;
+        String filetype;
         do {
             objectTypeFinder = objectTypePattern.matcher(filename);
             if (objectTypeFinder.find()) {
-                String filetype = filename.substring(objectTypeFinder.start(), objectTypeFinder.end());
+                filetype = filename.substring(objectTypeFinder.start(), objectTypeFinder.end());
                 if (filetype.equals(ZIP)) {
                     Pattern folderPattern = Pattern.compile("/.+$");
                     Matcher folderFinder = folderPattern.matcher(filename);
@@ -46,7 +47,7 @@ public class TheReader {
             }
         } while (true);
 
-        CryptoReader cryptoReader = new CryptoReader(filename);
+        CryptoReader cryptoReader = new CryptoReader(filename, filetype);
         if (askAboutDecryption()) {
            cryptoReader.decrypt();
         }
